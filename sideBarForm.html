@@ -1,0 +1,204 @@
+<html>
+
+<head>
+  <base target="_top">
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+  <!-- The CSS package above applies Google styling to buttons and other elements. -->
+  <style>
+    div {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      margin-right: 5px;
+      margin-left: 10px;
+    }
+    
+    input {
+      width: 80%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+    
+    input[type=text] {
+      width: 30ch;
+    }
+    
+    input[type=password] {
+      width: 20ch;
+    }
+    
+    focus {
+      background-color: lightblue;
+    }
+    
+    form {
+      width: 90%;
+      padding: 2px 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body onload="restoreValues()">
+  <script>
+    function sendForm() {
+      var data = document.forms[0];
+      google.script.run.withSuccessHandler(ready).processForm(data);
+      document.getElementById("configurationData").innerHTML = "Processing..";
+    }
+
+    function ready() {
+      document.getElementById("configurationData").innerHTML = "Retrieving saved values ..";
+      google.script.run.withSuccessHandler(runSuccess).getStoredProperies();
+    }
+
+    function runSuccess(configuration) {
+      var debugStr = "Saved Configuration Values<br/><hr/>";
+      var property;
+      for (property in configuration) {
+        debugStr += property + ' : ' + configuration[property] + '<br />';
+      }
+      if ((configuration['UserName'].length > 0) && (configuration['APIKey'].length > 0)) {
+        debugStr += '<br/><b>***** Please note: the API Key will override the username and password.</b></br/>';
+      }
+      debugStr += '<br/><hr/><input type="button" value="Close Sidebar" onclick="google.script.host.close()" />'
+      document.getElementById("configurationData").innerHTML = debugStr;
+    }
+
+    function restoreValues() {
+      google.script.run
+        .withSuccessHandler(restoreSuccess)
+        .withFailureHandler(setDefautls)
+        .getStoredProperies();
+    }
+
+    function restoreSuccess(restoredValues) {
+      console.log("***** Restoring from Saved Properties");
+      console.debug(restoredValues.UserName);
+      var a = document.getElementById("UserName");
+      if (typeof restoredValues.UserName == 'undefined') {
+        a.value = '';
+      } else {
+        a.value = restoredValues.UserName;      
+      }
+      var a = document.getElementById("Password");
+      if (typeof restoredValues.Password == 'undefined') {
+        a.value = '';
+      } else {
+        a.value = restoredValues.Password;      
+      }
+      var a = document.getElementById("StartDate");
+      if (typeof restoredValues.StartDate == 'undefined') {
+        a.value = new Date().toDateInputValue();
+      } else {
+        a.value = restoredValues.StartDate;
+      }
+      var a = document.getElementById("EndDate");
+      if (typeof restoredValues.EndDate == 'undefined') {
+        a.value = new Date().toDateInputValue();
+      } else {
+        a.value = restoredValues.EndDate;
+      }
+      var a = document.getElementById("APIKey");
+      if (typeof restoredValues.APIKey == 'undefined') {
+        a.value = '';
+      } else {
+        a.value = restoredValues.APIKey;
+      }
+      var a = document.getElementById("ShortCalls");
+      if (typeof restoredValues.ShortCalls == 'undefined') {
+        a.value = '.2';
+      } else {
+        a.value = restoredValues.ShortCalls;
+      }
+      var a = document.getElementById("QuerySize");
+      if (typeof restoredValues.QuerySize == 'undefined') {
+        a.value = '15';
+      } else {
+        a.value = restoredValues.QuerySize;
+      }
+      var a = document.getElementById("DebugMode");
+      if (typeof restoredValues.DebugLog == 'undefined') {
+        a.value = 'no';
+      } else {
+        a.value = restoredValues.DebugMode;
+      }
+    }
+    
+    function setDefautls() {
+      console.log("***** setting defaults");
+      var a = document.getElementById("UserName");
+      a.value = '';
+      var a = document.getElementById("Password");
+      a.value = '';
+      var a = document.getElementById("StartDate");
+      a.value = new Date().toDateInputValue();
+      var a = document.getElementById("EndDate");
+      a.value = new Date().toDateInputValue();
+      var a = document.getElementById("APIKey");
+      a.value = '';
+      var a = document.getElementById("ShortCalls");
+      a.value = '.2';
+      var a = document.getElementById("QuerySize");
+      a.value = '60';
+      var a = document.getElementById("DebugMode");
+      a.value = 'no';
+    }
+    
+    // Used to set default date
+    
+    Date.prototype.toDateInputValue = (function() {
+      var local = new Date(this);
+      local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+      return local.toJSON().slice(0,10);
+    });
+
+  </script>
+  <div> <img src="https://www.dialogtech.com/wp-content/uploads/2015/02/dialogtech_logo_rgb1-e1425267086594.png" height="42" /> </div>
+  <div id="configurationData">
+    <form id="form"> Username
+      <br/>
+      <input name="UserName" id="UserName" type="text">
+      <br/> Password
+      <br/>
+      <input name="Password" id="Password" type="password">
+      <br/>
+      <br/> Start Date
+      <input name="StartDate" id="StartDate" type="date">
+      <br/>
+      <br/> End Date
+      <input name="EndDate" id="EndDate" type="date">
+      <br/>
+      <br/> Calls less than this fraction of a minute are considered short calls. For example .2 is 12 seconds.
+      <input name="ShortCalls" id="ShortCalls" type="number" value=".2">
+      <br/>
+      <hr/>
+      <p><b>Advanced Options</b></p>
+      API Key (Overrides Username/Password if present)
+      <br/>
+      <input name="APIKey" id="APIKey" type="text">
+      <br/>
+      <br/> Days to retrieve per API call
+      <br/>
+      <input name="QuerySize" id="QuerySize" type="number" value="15">
+      <br/>
+      <br/> Enabledebug mode (yes/no)
+      <br/>
+      <input name="DebugMode" id="DebugMode" type="text" value="no">
+      <br/>
+      <br/> 
+    </form>
+    <button onclick="javascript:sendForm();">Save Configuration</button>
+    <br />
+    <br />
+    <hr /> To retrieve your call data select the appropriate option from the DialogTech menu at the top of the page.
+    <br />
+    <br />
+    <input type="button" value="Close Sidebar without Saving" onclick="google.script.host.close()" />
+    <br/> </div>
+</body>
+
+</html>
+
+

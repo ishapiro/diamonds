@@ -1,0 +1,4 @@
+function getCdrData() {
+  getDialogTechData("CDR");
+}
+
