@@ -18,6 +18,7 @@ with GIT.  The following URL is the github repository for GAPPS.
 https://github.com/danthareja/node-google-apps-script
 
 Detailed instructions for installing GAPPS in our are located in the file:
+
 "Google Apps Script Debugging using GAPPS.pdf file.
 
 GAPPS will rename the .js files to .gs when it uploads them to Google.  Using .js extensions
