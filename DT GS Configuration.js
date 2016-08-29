@@ -35,103 +35,50 @@ function getDebugMode() {
   return configurationData.DebugMode;
 }
 
-// Use the EMCMAScript 5 getter and setter syntax
-// Global vaiables used to measure performance
+// setup a namespace for shared configuration values
+// theses are basically global variables
 
-var MyConfigurationData = function() {
-    this._startTime = undefined;
-    this._endTime = undefined;
-    this._dataSize = undefined;
-    this._apiKey = undefined;
-    this._debugMode = undefined;
-    this._activeSpreadsheet = undefined;
+var MyConfigurationData = {
+  startTime:    undefined,
+  endTime:      undefined,
+  dataSize:     undefined,
+  apiKey:       undefined,
+  debugMode:    undefined,
+  activeSpreadsheet: undefined,
 };
-
-Object.defineProperties(MyConfigurationData.prototype, {
-    startTime : {
-        get : function() {
-            return this._startTime;
-        },
-        set : function(value) {
-            this._startTime = value;
-        }
-    },
-    endTime : {
-        get : function() {
-            return this._endTime;
-        },
-        set : function(value) {
-            this._endTime = value;
-        }
-    },
-    dataSize : {
-        get : function() {
-          return this._dataSize;
-        },
-        set : function(value) {
-          this._dataSize = value;
-        }
-    },
-    apiKey : {
-        get : function() {
-          return this._apiKey;
-        },
-        set : function(value) {
-          this._apiKey = value;
-        }
-    },
-    debugMode : {
-        get : function() {
-          return this._debugMode;
-        },
-        set : function(value) {
-          this._debugMode = value;
-        }
-    },
-    activeSpreadsheet : {
-        get : function() {
-          return this._activeSpreadsheet;
-        },
-        set : function(value) {
-          this._activeSpreadsheet = value;
-        }
-    }
-});
 
 // Define an object that will hold the date ranges for the query
 
+function prepareQueryDates() {
+  var userProperties = PropertiesService.getUserProperties();
+  var configurationData = userProperties.getProperties();
 
-function prepareQueryDates() {   
-    var userProperties = PropertiesService.getUserProperties();
-    var configurationData = userProperties.getProperties();
+  var startDateHTML = isoToDate(configurationData.StartDate);
+  var endDateHTML = isoToDate(configurationData.EndDate);
 
-    var startDateHTML = isoToDate(configurationData.StartDate);
-    var endDateHTML = isoToDate(configurationData.EndDate);
-    
-    var startDate = new Date(startDateHTML);
-    var endDate = new Date(endDateHTML);
-    
-    var startDateMil = startDate.getTime();
-    var endDateMil = endDate.getTime();
+  var startDate = new Date(startDateHTML);
+  var endDate = new Date(endDateHTML);
 
-    // Set the unit values in milliseconds.
-    var msecPerMinute = 1000 * 60;
-    var msecPerHour = msecPerMinute * 60;
-    var msecPerDay = msecPerHour * 24;
-    var daysInData = (endDate - startDate) / msecPerDay;
-    
-    var dateObj = {
-      startDate:     startDate,
-      startDateHTML: startDateHTML,
-      startDateMil:  startDateMil,
-      endDate:       endDate,
-      endDateHTML:   endDateHTML,
-      endDateMil:    endDateMil,
-      daysInData:    daysInData,
-      msecPerDay:    msecPerDay
-    };
-    
-    return dateObj;
+  var startDateMil = startDate.getTime();
+  var endDateMil = endDate.getTime();
+
+  // Set the unit values in milliseconds.
+  var msecPerMinute = 1000 * 60;
+  var msecPerHour = msecPerMinute * 60;
+  var msecPerDay = msecPerHour * 24;
+  var daysInData = (endDate - startDate) / msecPerDay;
+
+  var dateObj = {
+    startDate: startDate,
+    startDateHTML: startDateHTML,
+    startDateMil: startDateMil,
+    endDate: endDate,
+    endDateHTML: endDateHTML,
+    endDateMil: endDateMil,
+    daysInData: daysInData,
+    msecPerDay: msecPerDay
+  };
+
+  return dateObj;
 
 };
-

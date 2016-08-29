@@ -14,21 +14,23 @@ function sendCurlRequest(my_query) {
     return "failed";
   }
 
+  // IMS August 28 2016
+  // Cleaned up this section in response to a code review
   var dtStatusXML = response.getContentText();
 
-  // If the return message is not XML then assume it is CSV
-  try {
-    // will trigger error if this is not valid XML
+  // Check to see if this is a CSV or an XML file
+  if (dtStatusXML == "<?xml") {
+
+    // If we get back XML from DT then an error has occurred
+    // Parse it and return the error
     var dtStatus = XmlService.parse(dtStatusXML);
     var dtStatusText = dtStatus.getRootElement().getChild("result").getValue();
-  } catch (e) {
-    var dtStatus = "ok";
-  }
-
-  if (dtStatusText != "failed") {
-    return response.getContentText();
+    return dtStatusText;                      
+    
   } else {
-    return dtStatusText;
+    
+    // If the returned value is not XML than assume it is a CSV file 
+    return response.getContentText();         // This is a CSV which is not XML so return it
   }
 }
 
@@ -124,3 +126,5 @@ function formatTableData(results) {
   myToast('Array convertion complete', 'Diagnostic Data', 3);  
   return rows;
 }
+
+
