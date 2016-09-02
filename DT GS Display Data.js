@@ -5,9 +5,13 @@
    
 *******************************************************************************************/
 
-function displayData(dashBoardType, display_rows, dateRange, daysInData) {
+function displayData(DTDataObj) {
 
   var ss = MyConfigurationData.activeSpreadsheet;
+
+  var dashBoardType = DTDataObj.dashBoardType, 
+      display_rows = DTDataObj.dataFromCdr, 
+      dateRange = DTDataObj.dataRange;
 
   // Now display the data
    
@@ -64,7 +68,7 @@ function displayData(dashBoardType, display_rows, dateRange, daysInData) {
 
   var toastTimer = Math.floor((lastRow / 1000) + 3);
   myToast('Building pivot tables. This may take some time.', 'Status', toastTimer);
-  addPivotTables(dashBoardType,sheet, lastRow, lastColumn, daysInData);
+  addPivotTables(dashBoardType,sheet, lastRow, lastColumn);
   
   addDashboardTitles(dashBoardType,sheet, lastRow, dateRange);
   myToast('Generating graphs ...', 'Status', 5);

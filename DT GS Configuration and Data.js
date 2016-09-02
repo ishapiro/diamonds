@@ -5,6 +5,28 @@
  *
  *****************************************************************************************************/
 
+// setup a namespace for shared configuration values
+// theses are basically global variables
+
+var MyConfigurationData = {
+  startTime:    undefined,
+  endTime:      undefined,
+  dataSize:     undefined,
+  apiKey:       undefined,
+  debugMode:    undefined,
+  activeSpreadsheet: undefined,
+};
+
+// The data from DT is saved into this namespace
+
+var DTDataObj= {
+  csvData:          undefined,
+  dataSize:         undefined,
+  dataFromCdr:      undefined,
+  displayDataRange: undefined,
+  dashBoardType:    undefined
+};
+
 function getRowLimit() {
   // The following is the size limit in rows for each data table in this application
   // Google sheets are limited to 2M total rows
@@ -34,18 +56,6 @@ function getDebugMode() {
   var configurationData = userProperties.getProperties();
   return configurationData.DebugMode;
 }
-
-// setup a namespace for shared configuration values
-// theses are basically global variables
-
-var MyConfigurationData = {
-  startTime:    undefined,
-  endTime:      undefined,
-  dataSize:     undefined,
-  apiKey:       undefined,
-  debugMode:    undefined,
-  activeSpreadsheet: undefined,
-};
 
 // Define an object that will hold the date ranges for the query
 
@@ -82,3 +92,4 @@ function prepareQueryDates() {
   return dateObj;
 
 };
+

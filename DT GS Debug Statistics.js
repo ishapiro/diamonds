@@ -2,7 +2,7 @@ function debugStatistics(dashBoardType) {
 
     // TO DO Add code for call tracking
     
-    if (dashBoardType != "CDR") {
+    if ((dashBoardType != "CDR") || (MyConfigurationData.debugMode == "NO")) {
       return;
     }
 
@@ -12,17 +12,20 @@ function debugStatistics(dashBoardType) {
     var displayAppTime = Utilities.formatDate(appElaspedTime, "GMT", "HH:mm:ss");
     
     var ss = MyConfigurationData.activeSpreadsheet;
-    var appTimeRange = ss.getRangeByName("I1");
+    var dashboardSheet = ss.getSheetByName("Dashboard");
+
+    // Add statistics to the Dashboard
+    var appTimeRange = dashboardSheet.getRange("I1");
     appTimeRange.setValue('------- DIAGNOSTIC DATA -------');
     appTimeRange.setFontWeight("bold");
     
-    var appTimeRange = ss.getRangeByName("I2");
+    var appTimeRange = dashboardSheet.getRange("I2");
     appTimeRange.setValue('Time to run: ');
     appTimeRange.setFontWeight("bold");
-    var appTimeRange = ss.getRangeByName("J2");
+    var appTimeRange = dashboardSheet.getRange("J2");
     appTimeRange.setValue(displayAppTime);
     
-    var appTimeRange = ss.getRangeByName("I3");
+    var appTimeRange = dashboardSheet.getRange("I3");
     var sheet = ss.getSheetByName("CDRdata");
     var cdrSheetActiveCells = sheet.getLastColumn() * sheet.getLastRow();
     var sheet = ss.getSheetByName("Calcs"); 
@@ -30,7 +33,7 @@ function debugStatistics(dashBoardType) {
     
     appTimeRange.setValue('Active cells:');
     appTimeRange.setFontWeight("bold");
-    var appTimeRange = ss.getRangeByName("J3");
+    var appTimeRange = dashboardSheet.getRange("J3");
     appTimeRange.setValue(cdrSheetActiveCells + totalSheetActiveCells);
     appTimeRange.setNumberFormat("#,###");
     
@@ -40,17 +43,17 @@ function debugStatistics(dashBoardType) {
     var sheet = ss.getSheetByName("Calcs");  
     var totalSheetCells = sheet.getMaxColumns() * sheet.getMaxRows();
   
-    var appTimeRange = ss.getRangeByName("I4");
+    var appTimeRange = dashboardSheet.getRange("I4");
     appTimeRange.setValue('Max cells:');
     appTimeRange.setFontWeight("bold");
-    var appTimeRange = ss.getRangeByName("J4");
+    var appTimeRange = dashboardSheet.getRange("J4");
     appTimeRange.setValue(cdrCells + totalSheetCells);
     appTimeRange.setNumberFormat("#,###");
     
-    var appTimeRange = ss.getRangeByName("I5");
+    var appTimeRange = dashboardSheet.getRange("I5");
     appTimeRange.setValue('Bytes of data');
     appTimeRange.setFontWeight("bold");
-    var appTimeRange = ss.getRangeByName("J5");
+    var appTimeRange = dashboardSheet.getRange("J5");
     appTimeRange.setValue(MyConfigurationData.dataSize);
     appTimeRange.setNumberFormat("#,###");
     

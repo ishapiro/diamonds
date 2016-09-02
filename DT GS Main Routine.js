@@ -202,22 +202,25 @@ function getDialogTechData(dashBoardType) {
     debugLogger("Data retrieval complete");
 
     // Save the data size for analysis
-
     var dataSize = csv_response.length;
     MyConfigurationData.dataSize = dataSize;
 
-    // Convert the CSV string into an array
-    var dataFromCdr = "";
-
     // Now reformat the data into an array used by displayData
-    dataFromCdr = formatTableData(csv_response);
+    var dataFromCdr = formatTableData(csv_response);
     if (dataFromCdr == "failed") {
         Browser.msgBox("**** Too much data.  Please reduce the date range and try again.");
         return;
     }
 
+    // Save the date in the data object for use by other methods
+
+    DTDataObj.dataFromCdr = dataFromCdr;
+    DTDataObj.dataSize = dataSize;
+    DTDataObj.displayDateRange = displayDateRange;
+    DTDataObj.dashBoardType = dashBoardType;
+
     if (dataFromCdr != "failed") {
-        displayData(dashBoardType, dataFromCdr, displayDateRange, dateObj.daysInData);
+        displayData(DTDataObj);
     } else {
         Browser.msgBox("ERROR: Failed to retrieve data from DialogTech. Check the account credentials and the date range.");
     }

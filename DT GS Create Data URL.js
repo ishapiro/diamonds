@@ -10,7 +10,7 @@ function buildCdrQuery(dashBoardType, cdrStartDate, cdrEndDate) {
       cdrStartDate + "&end_date=" +
       cdrEndDate;
 
-  } else if (dashboardType == "Call Tracking") {
+  } else if (dashBoardType == "Call Tracking") {
     var cdrQuery = "http://secure.dialogtech.com/ibp_api.php?api_key=" +
       MyConfigurationData.apiKey + "&action=report.call_tracking&start_date=" +
       cdrStartDate + "&end_date=" +
