@@ -1,6 +1,12 @@
 // Add calculated fields to main spreadsheet in support for dashboard calculations
 
-function addCalculatedFields(dashBoardType, sheet, dataRows, dataColumns) {
+function addCalculatedFields(DTDataObj) {
+
+  var dashBoardType = DTDataObj.dashBoardType, 
+      dataRows =      DTDataObj.lastRow, 
+      dataColumns =   DTDataObj.lastColumn;
+
+  var sheet = getDataSheet(DTDataObj);
 
   // Convert the internal date into a usable date/time
   var formatRange = "A1:A" + sheet.getLastRow();

@@ -21,10 +21,10 @@
  * Information about gapps is located at https://github.com/danthareja/node-google-apps-script
  * 
  * Where debuginng standalone scripts that need a Google APPS object for execution you need
- * to moch in an active document.  As indicated above this is done in the checkForDebugMode()
+ * to mock in an active document.  As indicated above this is done in the checkForDebugMode()
  * method that is called at the beginning of execution.
  * 
- * In addtion when debugging in this mode the interactively setting of BREAKPOINTs is unrealiable
+ * In addition when debugging in this mode the interactively setting of BREAKPOINTs is unrealiable
  * due to inconsistancies in the google script editor.  An alternative that is very 
  * reliable is to add a "DEBUGGER" statement to the code.  Once you have stopped
  * at a breakpoint further breakpoints in the module work reliably.
@@ -69,6 +69,10 @@
 *******************************************************************************************/
 
 function getExecutionParameters() {
+    
+    // This method invokes checkForDebugMode to setup the active spreadsheet\
+    // and then retrieves and validates the login data from the local Google apps
+    // store.  
     
     // Setup/check for debug mode and bind the script to a spreadsheet
     checkForDebugMode();
@@ -219,43 +223,5 @@ function getDialogTechData(dashBoardType) {
     DTDataObj.displayDateRange = displayDateRange;
     DTDataObj.dashBoardType = dashBoardType;
 
-    if (dataFromCdr != "failed") {
-        displayData(DTDataObj);
-    } else {
-        Browser.msgBox("ERROR: Failed to retrieve data from DialogTech. Check the account credentials and the date range.");
-    }
-
-    // Add this data if we retrieved some calls
-
-    if (dataFromCdr.length == 0) {
-
-        noCallMsg = displayNoData(dashboardType);
-        Browser.msgBox(noCallMsg);
-        addSplashScreen();
-        focusOnSplashScreen();
-
-    } else {
-
-        // All done --- finish up the spreadsheet, clean up.
-        // Add the splash screen
-
-        addSplashScreen();
-
-        // Display the debug statistics
-        debugStatistics(dashBoardType);
-
-        // Recorder the tabs and put the focus back on the dashboard
-        reorderTabs(dashBoardType);
-        focusOnSplashScreen();
-
-        var toastTimer = Math.floor((dataFromCdr.length / 1000) + 3);
-        myToast(
-            'Google sheets calculating and filling graphs.  ' +
-            'Click on the Dashboard tab to view the results.', 'Status', toastTimer);
-
-    } // end no calls found
-
-    debugLogger("All done ...");
-
-    return;
+    return DTDataObj;
 }

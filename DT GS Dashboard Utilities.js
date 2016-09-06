@@ -1,4 +1,9 @@
-function addDashboardTitles(dashBoardType, mainSheet, dataRows, dateRange) {
+function addDashboardTitles(DTDataObj) {
+
+  var dashBoardType = DTDataObj.dashBoardType; 
+  var dataRows =      DTDataObj.lastRow; 
+  var dataColumns =   DTDataObj.lastColumn;
+  var dateRange =     DTDataObj.displayDateRange;
 
   createDashboard(dashBoardType);
 
@@ -42,6 +47,11 @@ function addSplashScreen() {
 
   // Setup/check for debug mode and bind the script to a spreadsheet
   checkForDebugMode();
+
+  // If we are in data only mode do not add a splashscreen
+  if (MyConfigurationData.menuType != "dashboard") {
+    return;
+  }
 
   var ss = MyConfigurationData.activeSpreadsheet;
   var welcomeScreen = ss.getSheetByName("DialogTech Welcome Screen");
@@ -102,6 +112,27 @@ function addSplashScreen() {
 
 }
 
+// All done, add splash screen, clean up tabs
+function cleanUpSpreadsheet(DTDataObj){
+ 
+  var dashBoardType = DTDataObj.dashBoardType;
+  var dataLength = DTDataObj.dataRows;
+
+  if (dataLength == 0) {
+      noCallMsg = displayNoData(dashboardType);
+      Browser.msgBox(noCallMsg);
+      // addSplashScreen();
+  } else {
+    // addSplashScreen();
+    debugStatistics(dashBoardType);
+    reorderTabs(dashBoardType);
+    focusOnDashboard(dashBoardType);
+  }
+  
+  return;
+}
+
+
 // Clear the tabs added by this script
 function clearResults(dashBoardType) {
 
@@ -121,6 +152,7 @@ function clearResults(dashBoardType) {
         ss.deleteSheet(sheet);
       }
     } catch (e) { /* do nothing */ }
+    
     try {
       var sheet = ss.getSheetByName('Calcs');
       if (sheet !== null) {
@@ -134,6 +166,14 @@ function clearResults(dashBoardType) {
       }
     } catch (e) { /* do nothing */ }
 
+    try {
+      // will trigger error if the tab does not exist
+      var sheet = ss.getSheetByName('DT Debug Log');
+      if (sheet !== null) {
+        ss.deleteSheet(sheet);
+      }
+    } catch (e) { /* do nothing */ }
+
   } else {
     try {
       // will trigger error if the tab does not exist
@@ -142,20 +182,31 @@ function clearResults(dashBoardType) {
         ss.deleteSheet(sheet);
       }
     } catch (e) { /* do nothing */ }
+
     try {
       var sheet = ss.getSheetByName('Call Tracking Calcs');
       if (sheet !== null) {
         ss.deleteSheet(sheet);
       }
     } catch (e) { /* do nothing */ }
+
     try {
       var sheet = ss.getSheetByName('Call Tracking Dashboard');
       if (sheet !== null) {
         ss.deleteSheet(sheet);
       }
     } catch (e) { /* do nothing */ }
+
     try {
       var sheet = ss.getSheetByName('FirstLastCalcs');
+      if (sheet !== null) {
+        ss.deleteSheet(sheet);
+      }
+    } catch (e) { /* do nothing */ }
+
+    try {
+      // will trigger error if the tab does not exist
+      var sheet = ss.getSheetByName('DT Debug Log');
       if (sheet !== null) {
         ss.deleteSheet(sheet);
       }
@@ -251,19 +302,38 @@ function createFirstLastTab() {
   }
 }
 
-function focusOnSplashScreen(){
+function focusOnDashboard(dashBoardType){
+  // If we are in data only mode there may not be a splashscreen
+  if (MyConfigurationData.menuType != "dashboard") {
+    return;
+  }
+  
   // Put the user back on the dashboard
   var ss = MyConfigurationData.activeSpreadsheet;
-  var sheet = ss.getSheetByName("DialogTech Welcome Screen");
+  
+  if (dashBoardType == "CDR") {
+    var dashBoardName = "Dashboard";
+  } else {
+    var dashBoardName = "Call Tracking Dashboard";
+  }
+
+  var sheet = ss.getSheetByName(dashBoardName);
   ss.setActiveSheet(sheet);
 }
 
 function reorderTabs(dashBoardType) {
+
+  // If we are in data only mode do not mess with the tabs
+  if (MyConfigurationData.menuType != "dashboard") {
+    return;
+  }
+
   var sheetNameArray = [];
 
   // These sheets are in reverse order because the code always moves the next sheet
   // to the first postion.  This avoids issues with attempting to put a sheet past
   // the current tabs which Google does not like.
+  sheetNameArray.push("DT Debug Log");
   sheetNameArray.push("FirstLastCalcs");
   sheetNameArray.push("Call Tracking Calcs");
   sheetNameArray.push("Call Tracking Data");
@@ -271,7 +341,6 @@ function reorderTabs(dashBoardType) {
   sheetNameArray.push("Calcs");
   sheetNameArray.push("CDRdata");
   sheetNameArray.push("Dashboard");
-  sheetNameArray.push("DialogTech Welcome Screen");
 
   var ss = MyConfigurationData.activeSpreadsheet;
   var sheet;
@@ -291,7 +360,4 @@ function reorderTabs(dashBoardType) {
         }
       }
   }
-
-  sheet = ss.getSheetByName("DialogTech Welcome Screen");
-  ss.setActiveSheet(sheet);
 }

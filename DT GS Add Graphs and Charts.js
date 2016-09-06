@@ -1,4 +1,8 @@
-function addDailyMinuteCharts(dashBoardType, sheet, dataRows, dataColumns) {
+function addDailyMinuteCharts(DTDataObj) {
+
+  var dashBoardType = DTDataObj.dashBoardType, 
+      dataRows =      DTDataObj.lastRow, 
+      dataColumns =   DTDataObj.lastColumn;
 
   if (dashBoardType == "CDR") {
 
@@ -107,7 +111,11 @@ function addDailyMinuteCharts(dashBoardType, sheet, dataRows, dataColumns) {
    }
 }
 
-function addBasicPieCharts(dashBoardType, sheet, dataRows, dataColumns) {
+function addBasicPieCharts(DTDataObj) {
+
+  var dashBoardType = DTDataObj.dashBoardType, 
+      dataRows =      DTDataObj.lastRow, 
+      dataColumns =   DTDataObj.lastColumn;
 
   if (dashBoardType == "CDR") {
 
@@ -331,7 +339,11 @@ function addBasicPieCharts(dashBoardType, sheet, dataRows, dataColumns) {
   }
 }
 
-function addFrequencyCharts(dashBoardType, sheet, dataRows, dataColumns) {
+function addFrequencyCharts(DTDataObj) {
+
+  var dashBoardType = DTDataObj.dashBoardType, 
+      dataRows =      DTDataObj.lastRow, 
+      dataColumns =   DTDataObj.lastColumn;
 
   if (dashBoardType == "CDR") {
 

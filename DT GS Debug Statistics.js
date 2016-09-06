@@ -14,6 +14,11 @@ function debugStatistics(dashBoardType) {
     var ss = MyConfigurationData.activeSpreadsheet;
     var dashboardSheet = ss.getSheetByName("Dashboard");
 
+    // For a data only request there will be no dashboard so no statistics
+    if (dashboardSheet == null) {
+      return;
+    }
+
     // Add statistics to the Dashboard
     var appTimeRange = dashboardSheet.getRange("I1");
     appTimeRange.setValue('------- DIAGNOSTIC DATA -------');

@@ -15,6 +15,7 @@ var MyConfigurationData = {
   apiKey:       undefined,
   debugMode:    undefined,
   activeSpreadsheet: undefined,
+  menuType:  undefined
 };
 
 // The data from DT is saved into this namespace
@@ -24,8 +25,22 @@ var DTDataObj= {
   dataSize:         undefined,
   dataFromCdr:      undefined,
   displayDataRange: undefined,
-  dashBoardType:    undefined
+  dashBoardType:    undefined,
+  lastRow:          undefined,
+  lastColumn:       undefined,
+  lastCell:         undefined
 };
+
+function getDataSheet(DTDataObj) {
+  if (DTDataObj.dashBoardType == "CDR") {
+    var dataName = "CDRdata";
+  } else {
+    var dataName = "Call Tracking Data";
+  }
+  var ss = MyConfigurationData.activeSpreadsheet;
+  var sheet = ss.getSheetByName(dataName);
+  return sheet;
+}
 
 function getRowLimit() {
   // The following is the size limit in rows for each data table in this application

@@ -10,18 +10,11 @@ function displayData(DTDataObj) {
   var ss = MyConfigurationData.activeSpreadsheet;
 
   var dashBoardType = DTDataObj.dashBoardType, 
-      display_rows = DTDataObj.dataFromCdr, 
-      dateRange = DTDataObj.dataRange;
+      display_rows =  DTDataObj.dataFromCdr; 
 
   // Now display the data
    
-  if (dashBoardType == "CDR") {
-    var dataName = "CDRdata";
-  } else {
-    var dataName = "Call Tracking Data";
-  }
-  
-  var sheet = ss.getSheetByName(dataName);
+  var sheet = getDataSheet(DTDataObj);
   var first_row = 2;
   var first_col = 1;
 
@@ -55,29 +48,23 @@ function displayData(DTDataObj) {
     var lastCell = sheet.getRange(first_row, first_col, lastRow, lastColumn);
   }
 
+  // Store the key values in the DTDataObj
+
+  DTDataObj.lastRow = lastRow;
+  DTDataObj.lastColumn = lastColumn;
+  DTDataObj.lastCell = lastCell;
+
   // Highlight the Title Row
 
-  var endColChar = NumToChar(lastColumn);
+  highlightTitleRow(DTDataObj);
+
+  return;
+}
+
+function highlightTitleRow(DTDataObj) {
+  var endColChar = NumToChar(DTDataObj.lastColumn);
+  var sheet = getDataSheet(DTDataObj);
   var range = sheet.getRange("A1:" + endColChar + "1");
   range.setBackground("#ffffcc");
   range.setFontWeight("bold");
-
-  var toastTimer = Math.floor((lastRow / 1000) + 3);
-  myToast('Adding calculated fields', 'Status', toastTimer);
-  addCalculatedFields(dashBoardType,sheet, lastRow, lastColumn);
-
-  var toastTimer = Math.floor((lastRow / 1000) + 3);
-  myToast('Building pivot tables. This may take some time.', 'Status', toastTimer);
-  addPivotTables(dashBoardType,sheet, lastRow, lastColumn);
-  
-  addDashboardTitles(dashBoardType,sheet, lastRow, dateRange);
-  myToast('Generating graphs ...', 'Status', 5);
-  
-  addBasicPieCharts(dashBoardType, sheet, lastRow, lastColumn);
-  
-  addDailyMinuteCharts(dashBoardType, sheet, lastRow, lastColumn);
-  
-  addFrequencyCharts(dashBoardType, sheet, lastRow, lastColumn);
- 
-  return;
 }

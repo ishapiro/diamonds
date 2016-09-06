@@ -20,26 +20,20 @@ function onOpen() {
        .addItem('Getting Started','gettingStarted')
        .addSeparator()
        .addItem('Configure Authentication and Options','openSideBar')
-       .addSeparator()
+       .addSeparator()    
        .addItem('Generate Call Detail Dashboard','createCdrTab')
        .addItem('Clear CDR Tabs','clearCdrTabs')
        .addSeparator()
        .addItem('Generate Call Tracking Dashboard','createCallTrackingTab')
        .addItem('Clear Call Trackling Tabs','clearCallTrackingTabs')
        .addSeparator()
-       .addItem('Future: Get Next Day of Data','getNextDay')
-       .addItem('Future: Fill in Data until Today','fillInData')
+       .addItem('Retrieve CDR Data Without Dashboard ','getCdrData') 
+       .addItem('Retrieve Call Tracking Data Without Dashboard ','getCallTrackingData')          
        .addSeparator()
        .addItem('Clear All Custom Tabs','clearAllTabs')
        .addItem('Clear Saved Options','clearSavedProperties')
        .addItem('About DialogTech Labs','labsHelp')
        .addToUi();
-
-       // Create the welcome screen
-
-       addSplashScreen();
-       focusOnSplashScreen();
-       clearSavedProperties();
 }
 
 /**
@@ -78,7 +72,7 @@ function clearSavedProperties() {
   removeProperty("ShortCalls");
   removeProperty("QuerySize");
   removeProperty("fetchURL");
-  removeProperty("DebugLog");
+  removeProperty("DebugMode");
 }
 
 
@@ -92,12 +86,7 @@ function labsHelp() {
       "considered experiments and will experience rapid interation that may be\\n" +
       "incompatible with product use.\\n\\n" +
       "If you anticipate using a DialogTech labs solution in production please contact\\n" +
-      "your account manager or the DialogTech success team for support.\\n\\n" +
-      "Additional information about getting started with this Lab solution is located \\n" +
-      "on the DialogTech Welcome Screen tab. ";
-
-  addSplashScreen();
-  focusOnSplashScreen();
+      "your account manager or the DialogTech success team for support.\\n\\n";
 
   Browser.msgBox(helpText);
 }
@@ -106,13 +95,11 @@ function gettingStarted() {
 
   checkForDebugMode();
 
+  var blogJumpStart = 'http://www.dialogtech.com/expertise/jumpstart/dialogtech-google-sheets-based-analytics-jumpstart-internal';
   var helpText =
       "Thank you for trying the DialogTech Labs Google Sheets Integration.\\n \\n" +
       "You will find instuctions for using this integration on the DialogTech \\n" +
-      "Welcome Screen Tab.\\n";
-
-  addSplashScreen();
-  focusOnSplashScreen();
+      "blog at " + blogJumpStart + " \n";
 
   Browser.msgBox(helpText);
 }

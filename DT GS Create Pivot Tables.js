@@ -1,6 +1,10 @@
 // Create pivot and summary tables on Calcs tab used by dashboard
 
-function addPivotTables(dashBoardType, sheet, dataRows, dataColumns, daysInData) {
+function addPivotTables(DTDataObj) {
+
+  var dashBoardType = DTDataObj.dashBoardType, 
+      dataRows =      DTDataObj.lastRow, 
+      dataColumns =   DTDataObj.lastColumn;
 
   createCalcTab(dashBoardType);
   var ss = MyConfigurationData.activeSpreadsheet;

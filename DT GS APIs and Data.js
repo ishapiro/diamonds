@@ -58,8 +58,6 @@ function checkLoginCredential() {
     var curlStatus = sendCurlRequest(my_query);
     if (curlStatus == "failed") {
       Browser.msgBox("Invalid API Key Provided (" + apiKey + "). If an API key is provided it overides the username/password.  Please verify configuration.");
-      addSplashScreen();
-      focusOnSplashScreen();
       return "failed";
     }
   }
@@ -71,9 +69,6 @@ function checkLoginCredential() {
                     
     Browser.msgBox( userPassMsg);
     
-    // Do not continue execution
-    addSplashScreen();
-    focusOnSplashScreen();
     return "failed";
   }
   
