@@ -72,6 +72,12 @@ function getDebugMode() {
   return configurationData.DebugMode;
 }
 
+function calcRowColor() {
+  return "#ffffcc";
+}
+
+
+
 // Define an object that will hold the date ranges for the query
 
 function prepareQueryDates() {

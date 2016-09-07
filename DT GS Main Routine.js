@@ -49,6 +49,14 @@
  * @return Tab FirstLastCalcs
  *
  * All global objects and parameters are defined in "DT GS Configuration.gs"
+ * 
+ * Two global namespaces define objects that are used througout the application:
+ * 
+ *      MyConfigurationData
+ *          is used to store information used during the execution of the application.
+ * 
+ *      DTDataObj 
+ *          stores the information retrieved from Dialogtech and values derived from this information.
  *
  */
 
@@ -59,12 +67,6 @@
    Sheets Add On menu.  The files containing these methods are named:
 
    "DT GS tab-name driver" --- For example "DT GS CDR Driver"
-
-   TO ADD A NEW Tab
-
-   1. Create a new "DS GS tabname driver" file with a createXXXTab method.
-   2. Add a no data found option to displayNoData() in "DT GS Create Data URL"
-   3. Add a buildCdrQuery(dashBoardType, StartDate, cdrEndData) option in "DT GS Create Data URL"
 
 *******************************************************************************************/
 
@@ -82,19 +84,17 @@ function getExecutionParameters() {
 
     // Validate login data and api key if provided
     var loginStatus = checkLoginCredential();
-    if (MyConfigurationData.loginStatus == "failed") {
-        // The checkLoginCredentials method displays any errors directly to the users
-        return;
-    }
+    
+    return loginStatus;
 }
 
 function getDialogTechData(dashBoardType) {
 
-    // This method will log the method with a timestamp to a debug tab in the current spreadsheet
+    // This method will log the message with a timestamp to a debug tab in the current spreadsheet
     // This replaces Logger.log which will not be available when testing as an Add On
     debugLogger("Starting in getDialogTechData");
 
-    // MyCOnfigurationData.activeSpreadsheet is the object variable with the currently active spreadsheet
+    // MyConfigurationData.activeSpreadsheet is the object variable with the currently active spreadsheet
     // DO NOT use getActiveSpreadsheet since this will not work with standalone scripts
     // Anyplace you would use getActiveSpreadsheet just retrieve this config parameter
 
@@ -109,7 +109,7 @@ function getDialogTechData(dashBoardType) {
 
     // The Spreadsheet.getactivespreadsheet().toast approach does not work with
     // standalone scripts.   Use myToast instead with the same parameters.
-    myToast('Fetching date from DialogTech', 'Diagnostic Data', 5);
+    myToast('Fetching date from DialogTech', 'Progress', 5);
 
     // Retrieve the dates from the config data and reformat for use
     var dateObj = prepareQueryDates();
@@ -166,7 +166,7 @@ function getDialogTechData(dashBoardType) {
         // Send the rest request to DT and check for errors. On an error return to the user.
         nextCsvSegment = sendCurlRequest(cdrQuery);
         if (nextCsvSegment == "failed") {
-            Browser.msgBox("***** Error retrieving data from Dialogtech, please reduce the query size in advanced options." +
+            myMsgBox("***** Error retrieving data from Dialogtech, please reduce the query size in advanced options." +
                 "\\n In addition it is recommended that you exit the spreadsheet completely and reopen it.  This " +
                 "is neccesary do since Google Sheets does not always properly recover from errors. ");
             return;
@@ -193,7 +193,7 @@ function getDialogTechData(dashBoardType) {
         var totalRows = csv_response.length / lengthOfRecord;
         Logger.log("total rows: " + totalRows);
         if (totalRows > getRowLimit()) {
-            Browser.msgBox("***** Error retrieving data from Dialogtech. " +
+            myMsgBox("***** Error retrieving data from Dialogtech. " +
                 Math.floor(totalRows) +
                 " calls retrieved so far exceeds the call limit of " +
                 getRowLimit() +
@@ -212,7 +212,7 @@ function getDialogTechData(dashBoardType) {
     // Now reformat the data into an array used by displayData
     var dataFromCdr = formatTableData(csv_response);
     if (dataFromCdr == "failed") {
-        Browser.msgBox("**** Too much data.  Please reduce the date range and try again.");
+        myMsgBox("**** Conversion of CSV to spreadsheet failed.  Please reduce the date range and try again.");
         return;
     }
 

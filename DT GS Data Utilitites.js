@@ -23,7 +23,7 @@ function yellowTitle(rangeStr, dashBoardType) {
   }
   
   var range = sheet.getRange(rangeStr);
-  range.setBackground("#ffffcc");
+  range.setBackground(calcRowColor());
   range.setFontWeight("bold");
 }
 

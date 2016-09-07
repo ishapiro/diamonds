@@ -22,7 +22,7 @@ function buildCdrQuery(dashBoardType, cdrStartDate, cdrEndDate) {
       "call_only_flag=1&processing_flag=1";
   } else {
     debugLogger("Invalid dashboardType specified");
-    Browser.msgBox("**** Invalid query type. Contact support.");
+    myMsgBox("**** Invalid query type. Contact support.");
   }
   return cdrQuery;
 }

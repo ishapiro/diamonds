@@ -88,18 +88,31 @@ function labsHelp() {
       "If you anticipate using a DialogTech labs solution in production please contact\\n" +
       "your account manager or the DialogTech success team for support.\\n\\n";
 
-  Browser.msgBox(helpText);
+  myMsgBox(helpText);
 }
 
 function gettingStarted() {
 
   checkForDebugMode();
 
-  var blogJumpStart = 'http://www.dialogtech.com/expertise/jumpstart/dialogtech-google-sheets-based-analytics-jumpstart-internal';
+  var blogJumpStart = '<a href="http://www.dialogtech.com/expertise/jumpstart/dialogtech-google-sheets-based-analytics-jumpstart-internal" target="_blank">' +
+                      'Click on this link for the Add On Jumpstart</a>';
   var helpText =
-      "Thank you for trying the DialogTech Labs Google Sheets Integration.\\n \\n" +
-      "You will find instuctions for using this integration on the DialogTech \\n" +
-      "blog at " + blogJumpStart + " \n";
+      "<p>Thank you for trying the DialogTech Labs Google Sheets Integration.</p>" +
+      "<p>You will find instuctions for using this integration on the DialogTech " +
+      "blog at: </p><br /><br />" + blogJumpStart;
 
-  Browser.msgBox(helpText);
+  showHTML(helpText,'Getting Started');
+}
+
+// HTML cannot be displayed in a msgBox so we have to use a UI alert instead
+// were we need to include HTML
+
+function showHTML(msg,myTitle) {
+  // Display a modal dialog box with custom HtmlService content.
+  var htmlOutput = HtmlService
+      .createHtmlOutput(msg)
+      .setWidth(500)
+      .setHeight(250);
+  SpreadsheetApp.getUi().showModalDialog(htmlOutput, myTitle);
 }

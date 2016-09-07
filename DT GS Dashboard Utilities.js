@@ -120,7 +120,7 @@ function cleanUpSpreadsheet(DTDataObj){
 
   if (dataLength == 0) {
       noCallMsg = displayNoData(dashboardType);
-      Browser.msgBox(noCallMsg);
+      myMsgBox(noCallMsg);
       // addSplashScreen();
   } else {
     // addSplashScreen();

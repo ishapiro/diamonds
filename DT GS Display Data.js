@@ -65,6 +65,6 @@ function highlightTitleRow(DTDataObj) {
   var endColChar = NumToChar(DTDataObj.lastColumn);
   var sheet = getDataSheet(DTDataObj);
   var range = sheet.getRange("A1:" + endColChar + "1");
-  range.setBackground("#ffffcc");
+  range.setBackground(calcRowColor());
   range.setFontWeight("bold");
 }
