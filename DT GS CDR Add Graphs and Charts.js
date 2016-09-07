@@ -1,4 +1,4 @@
-function addChartsAndGraphs(DTDataObj) {
+function addCDRChartsAndGraphs(DTDataObj) {
 
   var dashBoardType = DTDataObj.dashBoardType,
       dataRows =      DTDataObj.lastRow,

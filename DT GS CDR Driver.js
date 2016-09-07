@@ -24,7 +24,7 @@ function createCdrTab() {
     addDashboardTitles(DTDataObj);
     
     myToast('Generating graphs ...', 'Status', 5);
-    addChartsAndGraphs(DTDataObj)
+    addCDRChartsAndGraphs(DTDataObj)
     
     var toastTimer = Math.floor((DTDataObj.lastRow / 1000) + 3);
     myToast(
