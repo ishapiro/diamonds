@@ -69,7 +69,7 @@
     function restoreValues() {
       google.script.run
         .withSuccessHandler(restoreSuccess)
-        .withFailureHandler(setDefautls)
+        .withFailureHandler(setDefaults)
         .getStoredProperies();
     }
 
@@ -126,7 +126,7 @@
       }
     }
     
-    function setDefautls() {
+    function setDefaults() {
       console.log("***** setting defaults");
       var a = document.getElementById("UserName");
       a.value = '';
