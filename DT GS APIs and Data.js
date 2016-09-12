@@ -9,26 +9,29 @@ function sendCurlRequest(my_query) {
   try {
     response = UrlFetchApp.fetch(my_query, options);
   } catch (err) {
-      Browser.msgBox("Google UrlFetch error. Please reduce the number of days to retrieve per query in the advanced options configuration section. " +
+      myMsgBox("Google UrlFetch error. Please reduce the number of days to retrieve per query in the advanced options configuration section. " +
       "As a rule of thumb set this value to retrieve no more than 10,000 calls per query.  So if you receive 1,000 calls per day an optimal value would be 10 days.");
     return "failed";
   }
 
+  // IMS August 28 2016
+  // Cleaned up this section in response to a code review
   var dtStatusXML = response.getContentText();
 
-  // If the return message is not XML then assume it is CSV
-  try {
-    // will trigger error if this is not valid XML
+  // Check to see if this is a CSV or an XML file
+  var xmlCheck = dtStatusXML.substring(0, 5);
+  if (xmlCheck == "<?xml") {
+
+    // If we get back XML from DT then an error has occurred
+    // Parse it and return the error
     var dtStatus = XmlService.parse(dtStatusXML);
     var dtStatusText = dtStatus.getRootElement().getChild("result").getValue();
-  } catch (e) {
-    var dtStatus = "ok";
-  }
-
-  if (dtStatusText != "failed") {
-    return response.getContentText();
+    return dtStatusText;                      
+    
   } else {
-    return dtStatusText;
+    
+    // If the returned value is not XML than assume it is a CSV file 
+    return response.getContentText();         // This is a CSV which is not XML so return it
   }
 }
 
@@ -55,9 +58,7 @@ function checkLoginCredential() {
                     apiKey + '&action=general.buildingblockids';
     var curlStatus = sendCurlRequest(my_query);
     if (curlStatus == "failed") {
-      Browser.msgBox("Invalid API Key Provided (" + apiKey + "). If an API key is provided it overides the username/password.  Please verify configuration.");
-      addSplashScreen();
-      focusOnSplashScreen();
+      myMsgBox("Invalid API Key Provided (" + apiKey + "). If an API key is provided it overides the username/password.  Please verify configuration.");
       return "failed";
     }
   }
@@ -67,11 +68,8 @@ function checkLoginCredential() {
                       ' or Password: ' + password +
                       '\\n\\nIf an API key is provided it will override the Username and Password. If no API Key is provided the Username & Password are verified before proceeding.';
                     
-    Browser.msgBox( userPassMsg);
+    myMsgBox( userPassMsg);
     
-    // Do not continue execution
-    addSplashScreen();
-    focusOnSplashScreen();
     return "failed";
   }
   
@@ -97,7 +95,7 @@ function getApiKey(username, password) {
   try {
     fetchResponse = UrlFetchApp.fetch(myQuery, options);
   } catch (err) {
-    Browser.msgBox("Error validating user. " + myQuery);
+    myMsgBox("Error validating user. " + myQuery);
     return 'failed';
   }
 
@@ -113,7 +111,7 @@ function getApiKey(username, password) {
 function formatTableData(results) {
   var rows = [];
   
-  myToast('Converting CSV data into array', 'Diagnostic Data', 3);
+  myToast('Converting CSV data into array', 'Progress', 3);
   try {
     rows = Utilities.parseCsv(results);
   }
@@ -121,6 +119,8 @@ function formatTableData(results) {
     return "failed";
   }
   
-  myToast('Array convertion complete', 'Diagnostic Data', 3);  
+  myToast('Array convertion complete', 'Progress', 3);  
   return rows;
 }
+
+

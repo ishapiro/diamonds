@@ -29,6 +29,16 @@ function myToast(toastMsg, toastStatus, toastTime ) {
   
 }
 
+// Use this method instead of Browser.msgBox to better support debugging without an bound spreadsheet
+
+function myMsgBox(msg) {
+  if (SpreadsheetApp.getActiveSpreadsheet() != null) {
+    Browser.msgBox(msg);
+  } 
+  // Always add it into the debug log
+  debugLogger(msg);
+}
+
 function checkForDebugMode() {
   var debugMode = getDebugMode();
   if (debugMode === undefined) {
@@ -36,6 +46,12 @@ function checkForDebugMode() {
   } else {
     MyConfigurationData.debugMode = debugMode.toUpperCase();
   } 
+
+  if (MyConfigurationData.activeSpreadsheet) {
+
+    // We have already identified the spreadsheet so don't do it again
+    return;
+  }
   
   // Use the current spreadsheet or if not running as an add-on the debug sheet
   var ss = SpreadsheetApp.getActiveSpreadsheet();

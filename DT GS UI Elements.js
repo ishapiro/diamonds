@@ -1,5 +1,5 @@
 /*****************************************************************************************************
-* 
+*
 * User Interface Elements
 *
 * Requires sideBarForm.html which must be a captive files in the sheets script environment.
@@ -14,32 +14,26 @@ function onInstall() {
 }
 
 function onOpen() {
-  
+
  SpreadsheetApp.getUi()
        .createMenu('DialogTech')
        .addItem('Getting Started','gettingStarted')
        .addSeparator()
        .addItem('Configure Authentication and Options','openSideBar')
-       .addSeparator()
-       .addItem('Generate Call Detail Dashboard','getCdrData')
+       .addSeparator()    
+       .addItem('Generate Call Detail Dashboard','createCdrTab')
        .addItem('Clear CDR Tabs','clearCdrTabs')
        .addSeparator()
-       .addItem('Generate Call Tracking Dashboard','getTrackingData')
-       .addItem('Clear Call Trackling Tabs','clearCallTrackingTabs') 
+       .addItem('Generate Call Tracking Dashboard','createCallTrackingTab')
+       .addItem('Clear Call Trackling Tabs','clearCallTrackingTabs')
        .addSeparator()
-       .addItem('Future: Get Next Day of Data','getNextDay')
-       .addItem('Future: Fill in Data until Today','fillInData')
+       .addItem('Retrieve CDR Data Without Dashboard ','getCdrData') 
+       .addItem('Retrieve Call Tracking Data Without Dashboard ','getCallTrackingData')          
        .addSeparator()
-       .addItem('Clear All Custom Tabs','clearAllTabs') 
-       .addItem('Clear Saved Options','clearSavedProperties')       
-       .addItem('About DialogTech Labs','labsHelp')  
+       .addItem('Clear All Custom Tabs','clearAllTabs')
+       .addItem('Clear Saved Options','clearSavedProperties')
+       .addItem('About DialogTech Labs','labsHelp')
        .addToUi();
-       
-       // Create the welcome screen
-       
-       addSplashScreen();
-       focusOnSplashScreen();
-       clearSavedProperties();   
 }
 
 /**
@@ -58,13 +52,13 @@ function processForm(data) {
   // Save the configuration properties in the google script store
   var userProperties = PropertiesService.getUserProperties();
   userProperties.setProperties(data);
-  
+
   // Put any obsolete properties in the following method.
   removeObsoleteProperties();
 }
 
 function getStoredProperies() {
-  var userProperties = PropertiesService.getUserProperties();  
+  var userProperties = PropertiesService.getUserProperties();
   var configurationData = userProperties.getProperties();
   return configurationData;
 }
@@ -78,42 +72,47 @@ function clearSavedProperties() {
   removeProperty("ShortCalls");
   removeProperty("QuerySize");
   removeProperty("fetchURL");
-  removeProperty("DebugLog");
+  removeProperty("DebugMode");
 }
 
 
 function labsHelp() {
-  
+
   checkForDebugMode();
- 
-  var helpText = 
+
+  var helpText =
       "Dialogtech labs releases pre-production solutions that enhance the Dialogtech \\n" +
-      "user experience.  While these solutions are engineered for quality they are \\n" + 
+      "user experience.  While these solutions are engineered for quality they are \\n" +
       "considered experiments and will experience rapid interation that may be\\n" +
       "incompatible with product use.\\n\\n" +
       "If you anticipate using a DialogTech labs solution in production please contact\\n" +
-      "your account manager or the DialogTech success team for support.\\n\\n" +
-      "Additional information about getting started with this Lab solution is located \\n" +
-      "on the DialogTech Welcome Screen tab. ";
+      "your account manager or the DialogTech success team for support.\\n\\n";
 
-  addSplashScreen();
-  focusOnSplashScreen();
-  
-  Browser.msgBox(helpText);
+  myMsgBox(helpText);
 }
 
 function gettingStarted() {
- 
-  checkForDebugMode();
-  
-  var helpText = 
-      "Thank you for trying the DialogTech Labs Google Sheets Integration.\\n \\n" +
-      "You will find instuctions for using this integration on the DialogTech \\n" + 
-      "Welcome Screen Tab.\\n";
 
-  addSplashScreen();
-  focusOnSplashScreen();
-  
-  Browser.msgBox(helpText);
+  checkForDebugMode();
+
+  var blogJumpStart = '<a href="http://www.dialogtech.com/expertise/jumpstart/dialogtech-google-sheets-based-analytics-jumpstart-internal" target="_blank">' +
+                      'Click on this link for the Add On Jumpstart</a>';
+  var helpText =
+      "<p>Thank you for trying the DialogTech Labs Google Sheets Integration.</p>" +
+      "<p>You will find instuctions for using this integration on the DialogTech " +
+      "blog at: </p><br /><br />" + blogJumpStart;
+
+  showHTML(helpText,'Getting Started');
 }
 
+// HTML cannot be displayed in a msgBox so we have to use a UI alert instead
+// were we need to include HTML
+
+function showHTML(msg,myTitle) {
+  // Display a modal dialog box with custom HtmlService content.
+  var htmlOutput = HtmlService
+      .createHtmlOutput(msg)
+      .setWidth(500)
+      .setHeight(250);
+  SpreadsheetApp.getUi().showModalDialog(htmlOutput, myTitle);
+}
