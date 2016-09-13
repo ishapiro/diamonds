@@ -16,6 +16,36 @@
  * August 28th - refactored to "dry" up the code a bit and reduce the number of places where
  * we have specific logic checking for dashboard type.  This will make it easier to add 
  * dashboards.  Began the work to integrate Tim's initial code review comments.
+ * 
+ * September 2016 - reorganized the github version of the code in the following directory
+ * structure"
+ *                                                                                                             
+ * ├── DT\ GS\ Main\ Routine.js  (this file)                                                                                   
+ * ├── Google\ Apps\ Script\ Debugging\ using\ GAPPS.pdf (setup documentation)                                                           
+ * ├── README.md (additional getting started documentation)                                                                                                
+ * ├── gapps.config.json (gapps configuration file)                                                                                           
+ * ├── lib (routines shared acress tabs)                                                                                                         
+ * │   ├── DT\ GS\ APIs\ and\ Data.js                                                                               
+ * │   ├── DT\ GS\ Configuration\ and\ Data.js                                                                      
+ * │   ├── DT\ GS\ Create\ Data\ URL.js                                                                             
+ * │   ├── DT\ GS\ Dashboard\ Utilities.js                                                                          
+ * │   ├── DT\ GS\ Data\ Utilitites.js                                                                              
+ * │   ├── DT\ GS\ Debug\ Statistics.js                                                                             
+ * │   ├── DT\ GS\ Display\ Data.js                                                                                 
+ * │   ├── DT\ GS\ UI\ Elements.js                                                                                  
+ * │   └── DT\ Support\ and\ Log.js                                                                                 
+ * ├── sideBarForm.html                                                                                             
+ * └── tabs (routines specific to a tab)                                                                                                        
+ *     ├── call_tracking                                                                                            
+ *     │   ├── DT\ GS\ Call\ Tracking\ Add\ Graphs\ and\ Charts.js                                                  
+ *     │   ├── DT\ GS\ Call\ Tracking\ Calcs.js                                                                     
+ *     │   ├── DT\ GS\ Call\ Tracking\ Driver.js                                                                    
+ *     │   └── DT\ GS\ Call\ Tracking\ Pivots.js                                                                    
+ *     └── cdr                                                                                                      
+ *         ├── DT\ GS\ CDR\ Add\ Graphs\ and\ Charts.js                                                             
+ *         ├── DT\ GS\ CDR\ Calcs.js                                                                                
+ *         ├── DT\ GS\ CDR\ Driver.js                                                                               
+ *         └── DT\ GS\ CDR\ Pivots.js      
  *
  * This project is maintained as a local copy available to github via the gapps project.
  * Information about gapps is located at https://github.com/danthareja/node-google-apps-script
