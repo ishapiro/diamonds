@@ -36,5 +36,55 @@ does not work when testing add-ons.
 
 The best starting point to begin reviewing the code is "DT GS Main Routine.js"
 
+*** GETTING STARTED QUICK ***
+
+To get started in evaluating this code quickly take the following steps.
+
+1. Download the zip file of this code and save to a directory.
+
+2. Install GAPPS via NPM
+
+     npm install ­-g node­-google­-apps­-script
+
+3. Create a json file with the following content where fileid is the Google Drive
+ID of an empty script file.  The file ID for a Google drive file is the string between
+the d/ and /edit.  For example:
+
+         ..... /d/1mGkt1HxFPQvYh8uSbh5435NKIwBWT-NlJymec-z4EaJ7tYQ_oPtkvhC7/edit ....
+
+        Create the file containing the following four lines and save as gapps.config.json
+
+        {
+        "path": ".",
+        "fileId": "1mGkt1HxFPQvYh8uSbh5435NKIwBWT-NlJymec-z4EaJ7tYQ_oPtkvhC7"
+        }
+
+4. Now to upload your code to the Google Drive Script file just type:
+
+    bash-3.2$ gapps push                                                                          
+    Pushing back up to Google Drive...                                                            
+    The latest files were successfully uploaded to your Apps Script project.                      
+    bash-3.2$   
+
+5. Once your script file is created it may be debugged by "testing as an add on" or by
+selecting a module and clicking debug to run.  Here are the recommended first steps:
+
+    a. Run as an add-on via "Publish / Test as Add On"
+    b. Select the configuration options from the Add On menu, save your account 
+    ID and a date range.
+    c. MAKE SURE you set the debug configuration option to YES.
+    d. Then select one of the dashboard options to see how it works.
+
+    When you are ready to debug since your configuration has been saved you
+    can now run directly from the script IDE.
+
+    a. Put a debugger statement, yes the word debugger, somewhere in the code.
+    b. Select one of the "driver" modules
+    c. Click the debug icon
+    d. The code will identify that it is running in debug mode and not in add on
+    mode and it will create a temporaty spreadsheet for debugging.
+    e. The code will break when it reaches your debugger statement.
+
+
 Irv Shapiro
-August 2016
+September 2016
