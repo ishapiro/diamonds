@@ -75,8 +75,8 @@ selecting a module and clicking debug to run.  Here are the recommended first st
     d. Select the radio button in the top of the "Test as add-on" window, next to the spreadsheet you selected in step C
     e. Select the configuration options from the Add On menu within your spreadsheet
     f. Save your account credentials or API Key, as well as a date range.
-    f. MAKE SURE you set the debug configuration option to YES, and save.
-    g. Via the Add On menu, select any of the reporting options to. 
+    g. MAKE SURE you set the debug configuration option to YES, and save.
+    h. Via the Add On menu, select any of the reporting options to see that dashboard/report. 
 
     When you are ready to debug since your configuration has been saved you
     can now run directly from the script IDE.
