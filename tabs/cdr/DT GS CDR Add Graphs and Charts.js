@@ -96,7 +96,7 @@ function addCDRChartsAndGraphs(DTDataObj) {
 
     var ss = MyConfigurationData.activeSpreadsheet;
     var noShortCallMsg = ss.getRangeByName("B43");
-    noShortCallMsg.setValue('No calls less that ' + getShortCallValue() + ' minutes.');
+    noShortCallMsg.setValue('No calls less than ' + getShortCallValue() + ' minutes.');
     noShortCallMsg.setFontWeight("bold");
     noShortCallMsg = ss.getRangeByName("B44");
     noShortCallMsg.setValue('You can change the short call duration in the configuration menu.');

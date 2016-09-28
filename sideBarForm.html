@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html>
-
 <head>
   <base target="_top">
   <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
   <!-- The CSS package above applies Google styling to buttons and other elements. -->
-  <style>
+  <title>DialogTech sideBarForm.html</title>
+  <style type="text/css">
     div {
       margin-top: 5px;
       margin-bottom: 5px;
@@ -39,9 +40,8 @@
     }
   </style>
 </head>
-
 <body onload="restoreValues()">
-  <script>
+  <script type="text/javascript">
     function sendForm() {
       var data = document.forms[0];
       google.script.run.withSuccessHandler(ready).processForm(data);
@@ -60,7 +60,7 @@
         debugStr += property + ' : ' + configuration[property] + '<br />';
       }
       if ((configuration['UserName'].length > 0) && (configuration['APIKey'].length > 0)) {
-        debugStr += '<br/><b>***** Please note: the API Key will override the username and password.</b></br/>';
+        debugStr += '<br/><b>***** Please note: the API Key will override the username and password.</b><br/>';
       }
       debugStr += '<br/><hr/><input type="button" value="Close Sidebar" onclick="google.script.host.close()" />'
       document.getElementById("configurationData").innerHTML = debugStr;
@@ -108,7 +108,7 @@
       }
       var a = document.getElementById("ShortCalls");
       if (typeof restoredValues.ShortCalls == 'undefined') {
-        a.value = '.2';
+        a.value = '0.2';
       } else {
         a.value = restoredValues.ShortCalls;
       }
@@ -139,7 +139,7 @@
       var a = document.getElementById("APIKey");
       a.value = '';
       var a = document.getElementById("ShortCalls");
-      a.value = '.2';
+      a.value = '0.2';
       var a = document.getElementById("QuerySize");
       a.value = '60';
       var a = document.getElementById("DebugMode");
@@ -155,7 +155,7 @@
     });
 
   </script>
-  <div> <img src="https://www.dialogtech.com/wp-content/uploads/2015/02/dialogtech_logo_rgb1-e1425267086594.png" height="42" /> </div>
+  <div> <img src="https://www.dialogtech.com/wp-content/uploads/2015/02/dialogtech_logo_rgb1-e1425267086594.png" height="42" alt="DialogTech" /> </div>
   <div id="configurationData">
     <form id="form"> Username
       <br/>
@@ -170,8 +170,8 @@
       <br/> End Date
       <input name="EndDate" id="EndDate" type="date">
       <br/>
-      <br/> Calls less than this fraction of a minute are considered short calls. For example .2 is 12 seconds.
-      <input name="ShortCalls" id="ShortCalls" type="number" value=".2">
+      <br/> Calls less than this fraction of a minute are considered short calls. For example 0.2 is 12 seconds.
+      <input name="ShortCalls" id="ShortCalls" type="number" value="0.2">
       <br/>
       <hr/>
       <p><b>Advanced Options</b></p>

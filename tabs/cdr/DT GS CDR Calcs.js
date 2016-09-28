@@ -3,7 +3,7 @@
 function addCDRCalculatedFields(DTDataObj) {
 
   var dashBoardType = DTDataObj.dashBoardType, 
-      dataRows =      DTDataObj.lastRow, 
+      dataRows =      DTDataObj.lastRow+1, 
       dataColumns =   DTDataObj.lastColumn;
 
   var sheet = getDataSheet(DTDataObj);
@@ -11,6 +11,9 @@ function addCDRCalculatedFields(DTDataObj) {
   // Convert the internal date into a usable date/time
   var formatRange = "A1:A" + sheet.getLastRow();
   sheet.getRange(formatRange).setNumberFormat("MM/DD/YY HH:MM:SS");
+
+  // Adds column headers for all data present from the API call and not a custom column
+  var range = sheet.getRange("A1:U1").setValues([["date_added","sid","call_type","first_activity","second_activity","last_activity","activity_info","usr_click_id","dnis","ani","switch_minutes","network_minutes","enhanced_minutes","adj_switch","adj_network","adj_enhanced","call_duration","transfer_type","transfer_to","phone_label","click_description"]]);
 
   // Create a column with just the date and no time
   sheet.insertColumnAfter(1);

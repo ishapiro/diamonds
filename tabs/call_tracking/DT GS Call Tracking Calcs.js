@@ -3,7 +3,7 @@
 function addCallTrackingCalculatedFields(DTDataObj) {
 
   var dashBoardType = DTDataObj.dashBoardType, 
-      dataRows =      DTDataObj.lastRow, 
+      dataRows =      DTDataObj.lastRow+1, 
       dataColumns =   DTDataObj.lastColumn;
 
   var sheet = getDataSheet(DTDataObj);
@@ -11,6 +11,9 @@ function addCallTrackingCalculatedFields(DTDataObj) {
   // Convert the internal date into a usable date/time
   var formatRange = "A1:A" + sheet.getLastRow();
   sheet.getRange(formatRange).setNumberFormat("MM/DD/YY HH:MM:SS");
+
+  // Adds column headers for all data present from the API call and not a custom column
+  var range = sheet.getRange("A1:V1").setValues([["Date/Time","Session ID","Dialed Number","Transfer To Number","Call Duration","Intelligent Minutes","Talk Minutes","Keywords","Match Type","Ads","Ad Group","Campaign","Cost Per Call","Channel","Domain Set","Activity Type","Activity Value","First Touch","Last Touch","ST Visitor Activity Log","Call-only Flag","Processing"]]);
 
   // Create a column with just the date and no time
   sheet.insertColumnAfter(1);
