@@ -69,11 +69,14 @@ the d/ and /edit.  For example:
 5. Once your script file is created it may be debugged by "testing as an add on" or by
 selecting a module and clicking debug to run.  Here are the recommended first steps:
 
-    a. Run as an add-on via "Publish / Test as Add On"
-    b. Select the configuration options from the Add On menu, save your account 
-    ID and a date range.
-    c. MAKE SURE you set the debug configuration option to YES.
-    d. Then select one of the dashboard options to see how it works.
+    a. Create a new blank spreadsheet and remember it's name
+    b. Return to your script and Run as an add-on via "Publish / Test as Add On"
+    c. Choose "Select Doc" in the bottom right and locate your spreadsheet
+    d. Select the radio button in the top of the "Test as add-on" window, next to the spreadsheet you selected in step C
+    e. Select the configuration options from the Add On menu within your spreadsheet
+    f. Save your account credentials or API Key, as well as a date range.
+    f. MAKE SURE you set the debug configuration option to YES, and save.
+    g. Via the Add On menu, select any of the reporting options to. 
 
     When you are ready to debug since your configuration has been saved you
     can now run directly from the script IDE.
