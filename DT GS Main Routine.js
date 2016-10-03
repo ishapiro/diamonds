@@ -195,6 +195,10 @@ function getDialogTechData(dashBoardType) {
 
         // Send the rest request to DT and check for errors. On an error return to the user.
         nextCsvSegment = sendCurlRequest(cdrQuery);
+
+        // A new API request was sent. Return foundTitle variable to false to remove new header row
+        foundTitle = false;
+
         if (nextCsvSegment == "failed") {
             myMsgBox("***** Error retrieving data from Dialogtech, please reduce the query size in advanced options." +
                 "\\n In addition it is recommended that you exit the spreadsheet completely and reopen it.  This " +

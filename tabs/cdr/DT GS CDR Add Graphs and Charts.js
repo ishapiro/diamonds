@@ -96,7 +96,7 @@ function addCDRChartsAndGraphs(DTDataObj) {
 
     var ss = MyConfigurationData.activeSpreadsheet;
     var noShortCallMsg = ss.getRangeByName("B43");
-    noShortCallMsg.setValue('No calls less that ' + getShortCallValue() + ' minutes.');
+    noShortCallMsg.setValue('No calls less than ' + getShortCallValue() + ' minutes.');
     noShortCallMsg.setFontWeight("bold");
     noShortCallMsg = ss.getRangeByName("B44");
     noShortCallMsg.setValue('You can change the short call duration in the configuration menu.');
@@ -253,7 +253,8 @@ function addCDRChartsAndGraphs(DTDataObj) {
 
   var chart = sheet.newChart()
     .setChartType(Charts.ChartType.PIE)
-    .setOption('title', 'Call by Durations')
+    .setOption('title', 'Call by Duration')
+    .setOption('sliceVisibilityThreshold',0)
     .setOption('backgroundColor', '#FFF5DA')
     .addRange(sheet.getRange("Calcs!AA1:AB8"))
     .setOption('width', 400)
