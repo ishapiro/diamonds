@@ -3,7 +3,7 @@
 function addCallTrackingPivotTables(DTDataObj) {
 
   var dashBoardType = DTDataObj.dashBoardType, 
-      dataRows =      DTDataObj.lastRow, 
+      dataRows =      DTDataObj.lastRow+1, 
       dataColumns =   DTDataObj.lastColumn;
 
   createCalcTab(dashBoardType);
@@ -27,12 +27,12 @@ function addCallTrackingPivotTables(DTDataObj) {
 
   // Totals by First Touch
   var cell = sheet.getRange("J1:J1");
-  cell.setValue('=QUERY(\'FirstLastCalcs\'!A2:N' + dataRows + ', "select E,count(A) group by E order by count(A) desc label count(A) \'First Page CNT\' ")');
+  cell.setValue('=QUERY(\'FirstLastCalcs\'!A1:N' + dataRows + ', "select E,count(A) group by E order by count(A) desc label count(A) \'First Page CNT\' ")');
   yellowTitle("J2:K2", dashBoardType);   
 
   // Totals by Last Touch
   var cell = sheet.getRange("M1:M1");
-  cell.setValue('=QUERY(\'FirstLastCalcs\'!A2:N' + dataRows + ', "select M,count(A) group by M order by count(A) desc label count(A) \'Last Page CNT\' ")');
+  cell.setValue('=QUERY(\'FirstLastCalcs\'!A1:N' + dataRows + ', "select M,count(A) group by M order by count(A) desc label count(A) \'Last Page CNT\' ")');
   yellowTitle("M2:N2", dashBoardType);  
 
   // Totals First Last Combination
@@ -44,7 +44,7 @@ function addCallTrackingPivotTables(DTDataObj) {
   var cell = sheet.getRange("S1:S1");
   cell.setValue('First ==> Last');    
   var cell = sheet.getRange("S2:S27");
-  cell.setValue('=CONCATENATE(P2," ==> ",Q2)');
+  cell.setValue('=if(isblank(P2),,CONCATENATE(P2," ==> ",Q2))');
 
   return;
 
