@@ -1,11 +1,14 @@
 function addCDRChartsAndGraphs(DTDataObj) {
 
-  var dashBoardType = DTDataObj.dashBoardType,
-      dataRows =      DTDataObj.lastRow,
+  var dashBoardType = DTDataObj.dashBoardType, 
       dataColumns =   DTDataObj.lastColumn;
 
   var ss = MyConfigurationData.activeSpreadsheet;
   var sheet = ss.getSheetByName('Dashboard');
+
+  // Determine the amount of Unique Days in the returned data
+  var daysCount = sheet.getRange("Calcs!A1:A").getValues().filter(String).length;
+
 
   // Now build the call count chart
   // Postion is row, column, horizontal pixels, vertical pixels
@@ -21,8 +24,8 @@ function addCDRChartsAndGraphs(DTDataObj) {
         fontSize: 12
       }
     })
-    .addRange(sheet.getRange("Calcs!A1:A" + dataRows))
-    .addRange(sheet.getRange("Calcs!B1:B" + dataRows))
+    .addRange(sheet.getRange("Calcs!A1:A" + daysCount))
+    .addRange(sheet.getRange("Calcs!B1:B" + daysCount))
     .setOption('width', 1223)
     .setOption('height', 200)
     .setPosition(7, 1, 5, 275)
@@ -44,8 +47,8 @@ function addCDRChartsAndGraphs(DTDataObj) {
         fontSize: 12
       }
     })
-    .addRange(sheet.getRange("Calcs!A1:A" + dataRows))
-    .addRange(sheet.getRange("Calcs!C1:C" + dataRows))
+    .addRange(sheet.getRange("Calcs!A1:A" + daysCount))
+    .addRange(sheet.getRange("Calcs!C1:C" + daysCount))
     .setOption('width', 1223)
     .setOption('height', 200)
     .setPosition(7, 1, 5, 500)
@@ -82,9 +85,9 @@ function addCDRChartsAndGraphs(DTDataObj) {
       .setOption('isStacked', 'relative')
       .setOption('dataLabel', 'value')
       .setOption('tooltip', true)
-      .addRange(sheet.getRange("Calcs!N1:N" + dataRows))
-      .addRange(sheet.getRange("Calcs!P1:P" + dataRows))
-      .addRange(sheet.getRange("Calcs!O1:O" + dataRows))
+      .addRange(sheet.getRange("Calcs!N1:N" + daysCount))
+      .addRange(sheet.getRange("Calcs!P1:P" + daysCount))
+      .addRange(sheet.getRange("Calcs!O1:O" + daysCount))
       .setOption('width', 1223)
       .setOption('height', 200)
       .setPosition(7, 1, 5, 725)

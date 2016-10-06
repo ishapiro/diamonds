@@ -3,7 +3,7 @@
 function addCDRPivotTables(DTDataObj) {
 
   var dashBoardType = DTDataObj.dashBoardType, 
-      dataRows =      DTDataObj.lastRow, 
+      dataRows =      DTDataObj.lastRow+1, 
       dataColumns =   DTDataObj.lastColumn;
 
   createCalcTab(dashBoardType);

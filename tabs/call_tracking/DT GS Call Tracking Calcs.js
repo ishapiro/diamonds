@@ -52,7 +52,7 @@ function addCallTrackingCalculatedFields(DTDataObj) {
   sheet.getRange("F1:F1").setValue("First Parameters");
   sheet.getRange("A1:F1").setBackground(calcRowColor());
   var cell = sheet.getRange("A2:A" + dataRows);
-  cell.setValue('=REGEXEXTRACT(\'Call Tracking Data\'!S2,"' + parse_url + '")');
+  cell.setValue('=IFERROR(REGEXEXTRACT(\'Call Tracking Data\'!S2,"' + parse_url + '"),)');
   
   // Parse the Last Touch URL and get the Path
   var range = sheet.getRange("I1:I" + dataRows);
@@ -63,7 +63,7 @@ function addCallTrackingCalculatedFields(DTDataObj) {
   sheet.getRange("N1:N1").setValue("Last Parameters");
   sheet.getRange("I1:N1").setBackground(calcRowColor());
   var cell = sheet.getRange("I2:I" + dataRows);
-  cell.setValue('=REGEXEXTRACT(\'Call Tracking Data\'!T2,"' + parse_url + '")');
+  cell.setValue('=IFERROR(REGEXEXTRACT(\'Call Tracking Data\'!T2,"' + parse_url + '"),)');
 
   // Add a rows with unique combinations of first and last
   // Add to first last tab
