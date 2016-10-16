@@ -1,99 +1,133 @@
 function addCDRChartsAndGraphs(DTDataObj) {
 
   var dashBoardType = DTDataObj.dashBoardType, 
-      dataColumns =   DTDataObj.lastColumn;
+      dataColumns =   DTDataObj.lastColumn,
+      dataRows =      DTDataObj.lastRow;
 
   var ss = MyConfigurationData.activeSpreadsheet;
   var sheet = ss.getSheetByName('Dashboard');
 
   // Determine the amount of Unique Days in the returned data
-  var daysCount = sheet.getRange("Calcs!A1:A").getValues().filter(String).length;
+  // IMS 10/16/2016 Corrected range to exclude header
+  var daysCount = sheet.getRange("Calcs!A2:A").getValues().filter(String).length;
 
 
   // Now build the call count chart
   // Postion is row, column, horizontal pixels, vertical pixels
+  // IMS 10/16/2016 Only display graph if more than one day
+  // IMS Adjust daysCount to include title
 
-  var chart = sheet.newChart()
-    .setChartType(Charts.ChartType.COLUMN)
-    .setOption('title', 'Call Count by Date')
-    .setOption('backgroundColor', '#FFF5DA')
-    .setOption('legend', {
-      position: 'top',
-      textStyle: {
-        color: 'blue',
-        fontSize: 12
-      }
-    })
-    .addRange(sheet.getRange("Calcs!A1:A" + daysCount))
-    .addRange(sheet.getRange("Calcs!B1:B" + daysCount))
-    .setOption('width', 1223)
-    .setOption('height', 200)
-    .setPosition(7, 1, 5, 275)
-    .build();
+  if (daysCount > 1) {
+    var chart = sheet.newChart()
+      .setChartType(Charts.ChartType.COLUMN)
+      .setOption('title', 'Call Count by Date')
+      .setOption('backgroundColor', '#FFF5DA')
+      .setOption('legend', {
+        position: 'top',
+        textStyle: {
+          color: 'blue',
+          fontSize: 12
+        }
+      })
+      .addRange(sheet.getRange("Calcs!A1:A" + daysCount + 1))
+      .addRange(sheet.getRange("Calcs!B1:B" + daysCount + 1))
+      .setOption('width', 1223)
+      .setOption('height', 200)
+      .setPosition(7, 1, 5, 275)
+      .build();
 
-  sheet.insertChart(chart);
+    sheet.insertChart(chart);
+
+  } else {
+
+      var appCountRange = sheet.getRange("A24");
+      appCountRange.setValue('Graph skipped. Only one day selected.  Call count is: ' + dataRows);
+      appCountRange.setFontWeight("bold");
+      appCountRange.setFontSize("18");    
+  }
 
   // Now build the call duration chart
+  // IMS 10/16/2016 adjusted range to include title row
+  // IMS Skip if only one day
 
-  var chart = sheet.newChart()
-    .setChartType(Charts.ChartType.COLUMN)
-    .setOption('title', 'Call Duration by Date')
-    .setOption('backgroundColor', '#FFF5DA')
-    .setOption('tooltip', true)
-    .setOption('legend', {
-      position: 'top',
-      textStyle: {
-        color: 'blue',
-        fontSize: 12
-      }
-    })
-    .addRange(sheet.getRange("Calcs!A1:A" + daysCount))
-    .addRange(sheet.getRange("Calcs!C1:C" + daysCount))
-    .setOption('width', 1223)
-    .setOption('height', 200)
-    .setPosition(7, 1, 5, 500)
-    .build();
+  if (daysCount > 1) {
+    var chart = sheet.newChart()
+      .setChartType(Charts.ChartType.COLUMN)
+      .setOption('title', 'Call Duration by Date')
+      .setOption('backgroundColor', '#FFF5DA')
+      .setOption('tooltip', true)
+      .setOption('legend', {
+        position: 'top',
+        textStyle: {
+          color: 'blue',
+          fontSize: 12
+        }
+      })
+      .addRange(sheet.getRange("Calcs!A1:A" + daysCount + 1))
+      .addRange(sheet.getRange("Calcs!C1:C" + daysCount + 1))
+      .setOption('width', 1223)
+      .setOption('height', 200)
+      .setPosition(7, 1, 5, 500)
+      .build();
 
-  sheet.insertChart(chart);
+    sheet.insertChart(chart);
+
+  } else {
+
+      var callDuration = sheet.getRange("Calcs!C2:C2").getValue();
+      var appCountRange = sheet.getRange("A33");
+      appCountRange.setValue('Graph skipped. Only one day selected.  Total call duration is: ' + callDuration);
+      appCountRange.setFontWeight("bold");
+      appCountRange.setFontSize("18");    
+  }
 
   // Now build the short call chart
+  // IMS 10/16/2016 adjusted range to include title row
 
   // First check if we have any short calls
   var shortCallsDayOne = sheet.getRange("Calcs!O2:O2").getValue();
 
   if (shortCallsDayOne > 0) {
-    var shortCallLabel = 'Calls <' + getShortCallValue() + ' minutes';
-    var chart = sheet.newChart()
-      .setChartType(Charts.ChartType.COLUMN)
-      .setOption('title', shortCallLabel)
-      .setOption('backgroundColor', '#FFF5DA')
-      .setOption('legend', {
-        position: 'top',
-        textStyle: {
-          color: 'red',
-          fontSize: 12
-        }
-      })
-      .setOption('series', {
-        0: {
-          color: 'green'
-        },
-        1: {
-          color: 'red'
-        }
-      })
-      .setOption('isStacked', 'relative')
-      .setOption('dataLabel', 'value')
-      .setOption('tooltip', true)
-      .addRange(sheet.getRange("Calcs!N1:N" + daysCount))
-      .addRange(sheet.getRange("Calcs!P1:P" + daysCount))
-      .addRange(sheet.getRange("Calcs!O1:O" + daysCount))
-      .setOption('width', 1223)
-      .setOption('height', 200)
-      .setPosition(7, 1, 5, 725)
-      .build();
+    if (daysCount > 1) {
+      var shortCallLabel = 'Calls <' + getShortCallValue() + ' minutes';
+      var chart = sheet.newChart()
+        .setChartType(Charts.ChartType.COLUMN)
+        .setOption('title', shortCallLabel)
+        .setOption('backgroundColor', '#FFF5DA')
+        .setOption('legend', {
+          position: 'top',
+          textStyle: {
+            color: 'red',
+            fontSize: 12
+          }
+        })
+        .setOption('series', {
+          0: {
+            color: 'green'
+          },
+          1: {
+            color: 'red'
+          }
+        })
+        .setOption('isStacked', 'relative')
+        .setOption('dataLabel', 'value')
+        .setOption('tooltip', true)
+        .addRange(sheet.getRange("Calcs!N1:N" + daysCount + 1))
+        .addRange(sheet.getRange("Calcs!P1:P" + daysCount + 1))
+        .addRange(sheet.getRange("Calcs!O1:O" + daysCount + 1))
+        .setOption('width', 1223)
+        .setOption('height', 200)
+        .setPosition(7, 1, 5, 725)
+        .build();
 
-    sheet.insertChart(chart);
+        sheet.insertChart(chart);
+
+      } else {
+        var appCountRange = sheet.getRange("A41");
+        appCountRange.setValue('Graph Skipped. Only one day selected.  There were ' + shortCallsDayOne + " short calls.");
+        appCountRange.setFontWeight("bold");
+        appCountRange.setFontSize("18");    
+      }
 
   } else {
 
@@ -104,6 +138,7 @@ function addCDRChartsAndGraphs(DTDataObj) {
     noShortCallMsg = ss.getRangeByName("B44");
     noShortCallMsg.setValue('You can change the short call duration in the configuration menu.');
     noShortCallMsg.setFontWeight("bold");
+    noShortCallMsg.setFontSize("18"); 
   }
 
   // Now build the pie chart of call type

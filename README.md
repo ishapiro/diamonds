@@ -8,7 +8,7 @@ The Add-on integrates DialogTech Call Detail and Call Tracking with Google Sheet
 - Authentication (via username/password or public API key)
 - Retrieval of data from the CDR or Call Tracking APIs
 - Creation of Pivot Tables and Calculated fields based on the data
-- Graphing the selected data and producing dashboard
+- Graphing the selected data and producing a dashboard
 
 This code is implemented as a standalone Google script.  Standalone Google scripts are stored
 in Google Drive accounts.   The GAPPS project "node-google-apps-script" is used to extract the
@@ -87,6 +87,14 @@ selecting a module and clicking debug to run.  Here are the recommended first st
     d. The code will identify that it is running in debug mode and not in add on
     mode and it will create a temporaty spreadsheet for debugging.
     e. The code will break when it reaches your debugger statement.
+
+6. Ensure the gapps.config.json file which is unique to your test environment is not stored in git.
+
+    Create a .gitignore file in the same directory as your source which includes the following:
+
+    # .gitignore
+    gapps.config.json
+
 
 
 Irv Shapiro
